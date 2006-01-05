@@ -1,4 +1,4 @@
-package MegaDistro::Install3;
+package MegaDistro::InstallDeps;
 
 use strict;
 use warnings;

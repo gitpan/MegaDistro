@@ -5,7 +5,7 @@ package MegaDistro;
 
 use Test::More; # version?
 
-$VERSION = 0.01;	#the MegaDistro package version
+$VERSION = 0.02;	#the MegaDistro package version
 
 =pod
 

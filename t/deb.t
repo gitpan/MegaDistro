@@ -22,5 +22,5 @@ END { rmtree rel2abs "t/rootdir" }
 
 # test the packager's ability to generate a deb
 system( "$^X -Iblib/lib bin/megadistro --clean --force --disttype=deb --modlist=t/test.list --rootdir=t/rootdir" );
-my $DEB = 't/rootdir' . '/' . 'megadistro_0.01-1.deb';
+my $DEB = 't/rootdir' . '/' . 'megadistro_0.02-2.deb';
 ok( -e "$DEB", "build deb" );

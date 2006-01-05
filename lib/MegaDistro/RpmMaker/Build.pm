@@ -94,10 +94,10 @@ sub build_rpm {
 	#check for specfile, and package.
 	if ( -e "$buildtree{'specfile'}" ) {
 		if ( !$args{'verbose'} ) {
-			system( "rpmbuild --rcfile $buildtree{'rcfile'} -bb $addopts $buildtree{'specfile'} > $DEVNULL" );
+			system( "rpmbuild --rcfile $buildtree{'drcfile'}:$buildtree{'rcfile'} -bb $addopts $buildtree{'specfile'} > $DEVNULL" );
 		}
 		else {
-			system( "rpmbuild --rcfile $buildtree{'rcfile'} -bb $addopts $buildtree{'specfile'}" );
+			system( "rpmbuild --rcfile $buildtree{'drcfile'}:$buildtree{'rcfile'} -bb $addopts $buildtree{'specfile'}" );
 		}
 	}
 	else {

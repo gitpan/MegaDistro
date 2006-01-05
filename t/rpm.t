@@ -23,4 +23,4 @@ END { rmtree rel2abs "t/rootdir" }
 
 system( "$^X -Iblib/lib bin/megadistro --clean --force --disttype=rpm --modlist=t/test.list --rootdir=t/rootdir" );
 
-ok( glob("t/rootdir/megadistro-0.01-1.*.rpm"), "build rpm" );
+ok( glob("t/rootdir/megadistro-0.02-2.*.rpm"), "build rpm" );

@@ -13,6 +13,9 @@ $EXPORT_TAGS{'build'} = \@EXPORT_OK;
 	
 use lib '../MegaDistro';
 
+use File::Path;
+use File::Spec::Functions qw(:ALL);
+
 use MegaDistro;
 use MegaDistro::Config;
 
@@ -29,13 +32,13 @@ our %metadata = (
 		  'summary'	=>	'A pre-compiled set of perl modules',
 		 
 		  # the package Name
-		  'name'		=>	'megadistro',	
+		  'name'	=>	'megadistro',	
 		 
 		  # the package Version
 		  'version'	=>	$MegaDistro::VERSION,		
 		 
 		  # the package Release number
-		  'release'	=>	'1',		
+		  'release'	=>	'2',
 		 
 		  # the package License
 		  'license'	=>	'GPL',		
@@ -44,10 +47,10 @@ our %metadata = (
 		  'group'	=>	'Development/Libraries',
 		 
 		  # the package Source location
-		  'source'	=>	'https://svn.perl.org/projects/perlplus/trunk/megadistro-0.01.tar.gz',
+		  'source'	=>	'http://search.cpan.org/CPAN/authors/id/D/DB/DBUCHMAN/megadistro-0.02.tar.gz',
 		 
-#		  # the package URL
-#		  'url'		=>	'http://www.mysite.com/megadistro/megadistro.html',
+		  # the package URL
+		  'url'		=>	'http://search.cpan.org/~dbuchman/MegaDistro-0.02/',
 		 
 		  # the package Requires (depends)
 		  'requires'	  =>	'perl >= 5.6.1',
@@ -113,34 +116,37 @@ $stanza{'install'} = [
 sub _init_globals { #hack a la megadistro
 
 	# rpmbuild-tree prefix
-	$buildtree{'prefixdir'} = $Conf{'rootdir'} . '/' . 'rpmbuild';
+	$buildtree{'prefixdir'}  = catdir($Conf{'rootdir'}, 'rpmbuild');
 
 	# SOURCES directory
-	$buildtree{'SOURCES'}   = $buildtree{'prefixdir'} . '/' . "SOURCES";
+	$buildtree{'SOURCES'}    = catdir($buildtree{'prefixdir'}, 'SOURCES');
 
 	# BUILD directory
-	$buildtree{'BUILD'}     = $buildtree{'prefixdir'} . '/' . "BUILD";
+	$buildtree{'BUILD'}      = catdir($buildtree{'prefixdir'}, 'BUILD');
 
 	# RPMS directory
-	$buildtree{'RPMS'}      = $buildtree{'prefixdir'} . '/' . "RPMS";
+	$buildtree{'RPMS'}       = catdir($buildtree{'prefixdir'}, 'RPMS');
 
 	# SRPMS directory
-	$buildtree{'SRPMS'}     = $buildtree{'prefixdir'} . '/' . "SRPMS";
+	$buildtree{'SRPMS'}      = catdir($buildtree{'prefixdir'}, 'SRPMS');
 	
 	# SPECS directory
-	$buildtree{'SPECS'}     = $buildtree{'prefixdir'} . '/' . "SPECS";
+	$buildtree{'SPECS'}      = catdir($buildtree{'prefixdir'}, 'SPECS');
 
 	# the name of the rpm spec file
-	$buildtree{'specfile'}  = $buildtree{'SPECS'}     . '/' . 'megadistro.spec';
+	$buildtree{'specfile'}   = catdir($buildtree{'SPECS'}, 'megadistro.spec');
 	
 	# the name of the rpm rc file
-	$buildtree{'rcfile'}    = $buildtree{'prefixdir'} . '/' . '.rpmrc';
+	$buildtree{'rcfile'}     = $buildtree{'prefixdir'} . '/' . '.rpmrc';
+
+	# the name of the default rcfile
+	$buildtree{'drcfile'}    = '/usr/lib/rpm/rpmrc';
 	
 	# the name of the rpm macros file
 	$buildtree{'macrosfile'} = $buildtree{'prefixdir'} . '/' . '.rpmmacros';
 	
 	# the package BuildArch hardware platform
-	$metadata{'buildarch'}  = `rpm --eval %{_build_arch} 2>&1`; chomp $metadata{'buildarch'};
+	$metadata{'buildarch'}   = `rpm --eval %{_build_arch} 2>&1`; chomp $metadata{'buildarch'};
 }
 
 #
@@ -151,11 +157,11 @@ sub build_pre {
 		print 'MegaDistro::SpecFile::Config : Executing sub-routine: build_pre' . "\n";
 	}
 	
-	system( "mkdir -p $buildtree{'SOURCES'}" ) if ! -d $buildtree{'SOURCES'};
-	system( "mkdir -p $buildtree{'BUILD'}" )   if ! -d $buildtree{'BUILD'};
-	system( "mkdir -p $buildtree{'RPMS'}" )    if ! -d $buildtree{'RPMS'};
-	system( "mkdir -p $buildtree{'SRPMS'}" )   if ! -d $buildtree{'SRPMS'};
-	system( "mkdir -p $buildtree{'SPECS'}" )   if ! -d $buildtree{'SPECS'};
+	mkpath $buildtree{'SOURCES'} if ! -d $buildtree{'SOURCES'};
+	mkpath $buildtree{'BUILD'}   if ! -d $buildtree{'BUILD'};
+	mkpath $buildtree{'RPMS'}    if ! -d $buildtree{'RPMS'};
+	mkpath $buildtree{'SRPMS'}   if ! -d $buildtree{'SRPMS'};
+	mkpath $buildtree{'SPECS'}   if ! -d $buildtree{'SPECS'};
 }
 
 1;

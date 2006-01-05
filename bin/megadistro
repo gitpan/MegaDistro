@@ -240,11 +240,12 @@ Note: If no package type is specified, you will be prompted to select one.
 
 =head1 BUGS
 
-For bugs, please send information detailing the issue(s) to perl.megadistro@gmail.com
+For bugs, please file a bugreport at http://rt.cpan.org/NoAuth/Bugs.html?Dist=MegaDistro
+For more pressing needs or comments/suggestions please mail, with any pertinent information to dbuchman@cpan.org
 
 =head1 AUTHOR
 
-David Buchman (david.buchman@gmail.com)
+David Buchman (dbuchman@cpan.org)
 
 =head1 SPECIAL THANKS
 

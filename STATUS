@@ -1,14 +1,7 @@
---- Show Stoppers ---
-
-None that I can think of at the moment;
-  Just lots of improvements, that would not prevent the release of the system. :)
+----   Critical   ----
 
 
 ---- Improvements ----
-
-Use File::Spec, where using commands `mkdir -p`,
-  as well as, `rm -rf`.
-
 
 Use Archive::Tar over, requiring another dependency,
   being the `tar` command.

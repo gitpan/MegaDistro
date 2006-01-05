@@ -25,12 +25,13 @@ sub make_specfile {
 	print SPECFILE 'License: '      . $metadata{'license'}      . "\n";
 	print SPECFILE 'Group: '        . $metadata{'group'}        . "\n";
 	print SPECFILE 'Source: '       . $metadata{'source'}       . "\n";
-#	print SPECFILE 'URL: '          . $metadata{'url'}          . "\n";
+	print SPECFILE 'URL: '          . $metadata{'url'}          . "\n";
 	print SPECFILE 'Requires: '     . $metadata{'requires'}     . "\n";
 	print SPECFILE 'Obsoletes: '    . $metadata{'obsoletes'}    . "\n";
 	print SPECFILE 'Conflicts: '    . $metadata{'conflicts'}    . "\n";
 	print SPECFILE 'Vendor: '       . $metadata{'vendor'}       . "\n";
 	print SPECFILE 'Packager: '     . $metadata{'packager'}     . "\n";
+        print SPECFILE 'BuildArch: '    . $metadata{'buildarch'}    . "\n";
 	print SPECFILE 'BuildRoot: '    . $metadata{'buildroot'}    . "\n";
 	print SPECFILE 'AutoReqProv: '  . $metadata{'autoreqprov'}  . "\n";
 	

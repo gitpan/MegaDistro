@@ -10,7 +10,10 @@ our @EXPORT_OK = qw( %metadata %section build_pre );
 our %EXPORT_TAGS;
 $EXPORT_TAGS{'default'} = \@EXPORT;
 $EXPORT_TAGS{'build'} = \@EXPORT_OK;
-	
+
+use File::Path;
+use File::Spec::Functions qw(:ALL);
+
 use lib '../MegaDistro';
 
 use MegaDistro;
@@ -29,7 +32,7 @@ our %metadata = (
 		  'version'	  =>	$MegaDistro::VERSION,		
 		 
 		  # the package Release number
-		  'release'	  =>	'1',		
+		  'release'	  =>	'2',		
 		 
 		  # the package Section
 		  'section'	  =>	'libs',
@@ -50,7 +53,7 @@ our %metadata = (
 		  'conflicts'     =>    'megadistro (<< ' . $MegaDistro::VERSION . ')',
 		 
 		  # the package Maintainer
-		  'maintainer'    =>    'David Buchman <david.buchman@gmail.com>',
+		  'maintainer'    =>    'David Buchman <dbuchman@cpan.org>',
 		  
 		  # the package Description (short)
 		  'description'   =>    'A packaged bundle of pre-compiled perl modules.',
@@ -79,10 +82,10 @@ sub _init_globals {
 	$buildtree{'PACKAGE'}   = 'debian';
 
 	# SOURCES directory
-	$buildtree{'ROOT'}      = $Conf{'rootdir'}   . '/' . $buildtree{'PACKAGE'};
+	$buildtree{'ROOT'}      = catdir($Conf{'rootdir'}, $buildtree{'PACKAGE'});
 
 	# BUILD directory
-	$buildtree{'CONTROL'}   = $buildtree{'ROOT'} . '/' . 'DEBIAN';
+	$buildtree{'CONTROL'}   = catdir($buildtree{'ROOT'}, 'DEBIAN');
 
 	# RPM directory
 	$buildtree{'BUILDROOT'} = $buildtree{'ROOT'};
@@ -98,9 +101,9 @@ sub build_pre {
 		print 'MegaDistro::DebMaker::Config : Executing sub-routine: build_pre' . "\n";
 	}
 	
-	system( "mkdir -p $buildtree{'ROOT'}" ) if ! -d "$buildtree{'ROOT'}";
-	system( "mkdir -p $buildtree{'CONTROL'}" ) if ! -d "$buildtree{'CONTROL'}";
-	system( "mkdir -p $buildtree{'BUILDROOT'}" ) if ! -d "$buildtree{'BUILDROOT'}";
+	mkpath $buildtree{'ROOT'}      if ! -d $buildtree{'ROOT'};
+	mkpath $buildtree{'CONTROL'}   if ! -d $buildtree{'CONTROL'};
+	mkpath $buildtree{'BUILDROOT'} if ! -d $buildtree{'BUILDROOT'};
 }
 
 1;

@@ -13,7 +13,7 @@ use MegaDistro::Config qw(:default $DEVNULL);
 use MegaDistro::RpmMaker::Build qw(have_rpm build_rpm);
 use MegaDistro::DebMaker::Build qw(have_deb build_deb);
 
-use Archive::Tar;
+##use Archive::Tar;
 
 #create snapshot of buildtree
 sub make_tarball {
@@ -22,6 +22,7 @@ sub make_tarball {
 	my $date = sprintf "%02d%02d%02d", $year + 1900, $month + 1, $day;
 	my $TARBALL = 'megadistro' . '-' . $date . '.tar.gz';
 	system( "cd $Conf{'builddir'}; tar zcvf $Conf{'rootdir'}/$TARBALL * > $DEVNULL; cd $Conf{'rootdir'}" ); #safety
+#	my $tar = Archive::Tar->create_archive("Conf{'rootdir'}/$TARBALL"
 	return -e "$Conf{'rootdir'}/$TARBALL";
 }
 

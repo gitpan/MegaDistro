@@ -10,6 +10,7 @@ our @EXPORT_OK = qw(pre push_libs build_clean help $DEVNULL);
 our %EXPORT_TAGS;
 $EXPORT_TAGS{'default'} = \@EXPORT;
 
+use File::Path;
 use File::Spec::Functions qw(:ALL);
 
 
@@ -24,9 +25,9 @@ sub init_config {
 
 	%Conf = %overrides;
 
-	$Conf{'homedir'}  ||= $ENV{HOME};
+	$Conf{'homedir'}    ||= $ENV{HOME};
 
-	$Conf{'rootdir'}  ||= catdir($Conf{'homedir'}, '.megadistro');
+	$Conf{'rootdir'}    ||= catdir($Conf{'homedir'}, '.megadistro');
 
 	$Conf{'fetchdir'}   ||= catdir($Conf{'rootdir'}, 'Fetch');
 	$Conf{'extractdir'} ||= catdir($Conf{'rootdir'}, 'Extract');
@@ -39,7 +40,7 @@ sub init_config {
 	
 	# Configurable Files used in building the package
 
-	$Conf{'modlist'} ||= catfile($Conf{'rootdir'}, "modules.list");
+	$Conf{'modlist'}    ||= catfile($Conf{'rootdir'}, "modules.list");
 
 	# Make everything absolute in case we chdir.
 	for my $key (grep !/^disttype$/, keys %Conf) {
@@ -81,19 +82,19 @@ sub pre {
 		if ( $args{'debug'} ) {
 			print "\t" . 'Fetch directory: ' . $Conf{'fetchdir'} . ' does not exist, creating it' . "\n";
 		}
-		system( "mkdir -p $Conf{'fetchdir'}" );
+		mkpath $Conf{'fetchdir'};
 	}
 	if ( ! -d "$Conf{'extractdir'}" ) {
 		if ( $args{'debug'} ) {
 			print "\t" . 'Extract directory: ' . $Conf{'extractdir'} . ' does not exist, creating it' . "\n";
 		}
-		system( "mkdir -p $Conf{'extractdir'}" );
+		mkpath $Conf{'extractdir'};
 	}
 	if ( ! -d "$Conf{'builddir'}" ) {
 		if ( $args{'debug'} ) {
 			print "\t" . 'Build directory: ' . $Conf{'builddir'} . ' does not exist, creating it' . "\n";
 		}
-		system( "mkdir -p $Conf{'builddir'}" );
+		mkpath $Conf{'builddir'};
 	}
 	
 	&build_tree;
@@ -103,9 +104,9 @@ use Config;
 
 sub prop_libs {
 	my @add_libs;
-	push @add_libs, $Conf{'builddir'} . $Config{'installarchlib'};
-	push @add_libs, $Conf{'builddir'} . $Config{'installvendorarch'};
-	push @add_libs, $Conf{'builddir'} . $Config{'installvendorlib'};
+	push @add_libs, catdir($Conf{'builddir'}, $Config{'installarchlib'});
+	push @add_libs, catdir($Conf{'builddir'}, $Config{'installvendorarch'});
+	push @add_libs, catdir($Conf{'builddir'}, $Config{'installvendorlib'});
 	return @add_libs;
 }
 
@@ -119,17 +120,17 @@ sub push_libs {
 sub build_tree {
 	my @build_libs = &prop_libs;
 	for (@build_libs) {
-		system( "mkdir -p $_" ) if ! -d "$_";
+		mkpath $_ if ! -d "$_";
 	}
 }
 
 sub build_clean {
 
-	system( "rm -rf $Conf{'builddir'}/*" );
+	rmtree "$Conf{'builddir'}/*";
 
 }
 
-sub help {
+sub help { #perhaps replace with <<
 	print "\n";
 	print "Usage: Configure [OPTION]... [--disttype=TYPE]" . "\n";
 	print "  or:  Configure [-q] [-dxv] [-t TYPE]" . "\n";
