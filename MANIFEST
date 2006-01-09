@@ -17,6 +17,7 @@ modules.list
 README
 SPEC
 STATUS
+Changes
 t/build.t
 t/deb.t
 t/rpm.t
