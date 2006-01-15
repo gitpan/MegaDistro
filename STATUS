@@ -3,8 +3,7 @@
 
 ---- Improvements ----
 
-Use Archive::Tar over, requiring another dependency,
-  being the `tar` command.
+Spruce up the MegaDistro::DebMaker::Build code.
 
 Make tests (in general), more portable,
   unless they are to be used specifically for versionchecking

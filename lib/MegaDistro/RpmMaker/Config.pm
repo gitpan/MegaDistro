@@ -38,7 +38,7 @@ our %metadata = (
 		  'version'	=>	$MegaDistro::VERSION,		
 		 
 		  # the package Release number
-		  'release'	=>	'2',
+		  'release'	=>	'4',
 		 
 		  # the package License
 		  'license'	=>	'GPL',		

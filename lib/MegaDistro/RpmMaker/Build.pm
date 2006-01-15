@@ -13,6 +13,11 @@ use MegaDistro::Config qw(:default $DEVNULL);
 use MegaDistro::RpmMaker::Config qw(:default :build);
 use MegaDistro::RpmMaker::SpecFile qw(make_specfile);
 
+use File::Spec::Functions qw(:ALL);
+use File::Find;
+use Archive::Tar;
+
+no warnings 'File::Find';
 
 sub have_rpm {
 	`rpmbuild --help > /dev/null 2>&1`;
@@ -56,8 +61,11 @@ sub tarball_rpm {
 	#create src tarball
 	my $TARBALL = $metadata{'name'} . '-' . $metadata{'version'} . '.tar.gz';
 
-	
-	system( "cd $Conf{'builddir'}; tar zcvf $buildtree{'SOURCES'}/$TARBALL * > $DEVNULL; cd $Conf{'rootdir'}" ); #safety
+	my @files;
+	find(sub{push@files,abs2rel($File::Find::name,$Conf{'builddir'})},$Conf{'builddir'});
+	shift @files if !$files[0];
+	chdir $Conf{'builddir'};
+	my $tar = Archive::Tar->create_archive(catdir($buildtree{'SOURCES'},$TARBALL),9,@files);
 
 #	#check for tarball and copy to SOURCES directory
 #	if ( -s "$Conf{'rootdir'}/$TARBALL" ) {
