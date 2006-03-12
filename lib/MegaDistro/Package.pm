@@ -24,7 +24,7 @@ sub make_tarball {
 # return tarball name here?
 	my ( $year, $month, $day ) = (localtime)[5,4,3];
 	my $date = sprintf "%02d%02d%02d", $year + 1900, $month + 1, $day;
-	my $TARBALL = 'megadistro' . '-' . $date . '.tar.gz';
+	my $TARBALL = "megadistro-$date.tar.gz";
 	my @files;
 	find(sub{push@files,abs2rel($File::Find::name,$Conf{'builddir'})},$Conf{'builddir'});
 	shift @files if !$files[0];

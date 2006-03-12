@@ -50,13 +50,13 @@ sub init {
 			  prereqs    =>  3,
 			  allow_build_interactivity => 0,
 			  flush      =>  1,
-			  makeflags  => '--quiet',
+#			  makeflags  => '--quiet', # only gnu make supports this option, apparently.
 			  makemakerflags => "PREFIX=$Conf{'prefixdir'} INSTALLDIRS=vendor",
 			  lib        => [
-			                   "$Conf{'builddir'}$Config{'installvendorlib'}",
+			                   MegaDistro::Config::prop_libs()
 			                ]
 		       );
-	
+
 	print 'Rebuilding module indicies...' . "\n";
 	$cb->flush('all');
 
@@ -89,7 +89,7 @@ sub make_install {
 	#catch exceptions here, for non-init cpan mods that fall-thru
 	if ( !$mod ) {
 		printf "\n%18s", ' ';
-		print '*Module is was not found on cpan - skipping...';
+		print '*Module was not found on cpan - skipping...';
 		return 0;
 	}
 
@@ -155,6 +155,8 @@ sub make_test {
 		open 'STDOUT', '>/dev/null';
 		open 'STDERR', '>/dev/null';
 		$bool = $mod->test;
+		close 'STDOUT';
+		close 'STDERR';
 	}
 	else {
 		$bool = $mod->test;

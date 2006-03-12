@@ -32,7 +32,7 @@ our %metadata = (
 		  'version'	  =>	$MegaDistro::VERSION,		
 		 
 		  # the package Release number
-		  'release'	  =>	'4',		
+		  'release'	  =>	'5',		
 		 
 		  # the package Section
 		  'section'	  =>	'libs',

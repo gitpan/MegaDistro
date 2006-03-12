@@ -5,7 +5,7 @@
 use Test::More;
 use Archive::Tar;
 use File::Path;
-use File::Spec::Functions qw(rel2abs);
+use File::Spec::Functions qw(rel2abs catdir);
 
 # for my $key (sort {$a cmp $b} keys %ENV) {
 #     diag("$key: $ENV{$key}");
@@ -21,7 +21,7 @@ END { rmtree rel2abs "t/rootdir" }
 system( "$^X -Iblib/lib bin/megadistro --clean --force --build-only --modlist=t/test.list --rootdir=t/rootdir" );
 my ( $year, $month, $day ) = (localtime)[5,4,3];
 my $date = sprintf "%02d%02d%02d", $year + 1900, $month + 1, $day;
-my $tarball = 't/rootdir' . '/' . 'megadistro' . '-' . $date . '.tar.gz';
+my $tarball = catdir(rel2abs('t/rootdir'),"megadistro-$date.tar.gz");
 ok( -e $tarball, "build src" );
 
 my $tar = Archive::Tar->new;
